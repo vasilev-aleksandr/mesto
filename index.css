@@ -1,0 +1,192 @@
+@import url(./vendor/normalize.css);
+@import url(./fonts/inter.css);
+
+.body {
+    background-color: #000000;
+    box-sizing: border-box;
+}
+
+.page {
+    max-width: 1280px;
+    display: flex;
+    flex-flow: column;
+    margin-top: 0;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 200px;
+    box-sizing: border-box;
+    font-family: 'Inter', Arial, sans-serif;
+    color: #fff;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    }
+
+.header {
+    margin-top: 45px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-bottom: 1px solid #545454;
+}
+
+.header__title{
+  margin: 0;
+  font-weight: normal;
+  font-size: 36px;
+  margin-bottom: 41px;
+}
+
+.header__subtitle{
+  margin: 0;
+  font-size: 12px;
+}
+
+.profile{
+display: flex;
+flex-direction: row;
+margin-top: 36.25px;
+
+}
+
+.profile__avatar{
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    border-radius: 100%;
+}
+
+.profile__info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    margin-right: auto;
+    align-self: center;
+}
+
+.profile__name-container{
+    display: flex;
+    flex-direction: row;
+    width: 100%; 
+    align-items: center;
+}
+
+.profile__edit-button{
+    width: 24px;
+    height: 24px;
+    border: 1px solid #fff;
+    background-color: #000;
+    background-image: url(./images/Vector.svg);
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.profile__name{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 48px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 18px;
+}
+
+.profile__about{
+    margin: 0;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 22px;
+    margin-top: 16px;
+}
+
+.profile__add-button{
+    width: 150px;
+    height: 50px;
+    align-self: center;
+    border: 1px solid #fff;
+    background-color: #000;
+    background-image: url(./images/Vector2.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+.places{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px 18px;
+    margin-top: 47.25px;
+    margin-bottom: 67px;
+}
+
+.place{
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.place__photo{
+    width: 100%;
+    border-radius: 10px;
+}
+
+.place__description{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    margin-bottom: 31px;
+    margin-left: 21px;
+    margin-right: 15px;
+
+}
+
+.place__heading{
+    font-style: normal;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 29px;
+    max-width: 210px;
+    margin-right: auto;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.place__like{
+    width: 21px;
+    height: 18px;
+    background-image: url(./images/Vector3.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+
+.footer{
+   margin-bottom: 60px;
+}
+
+.footer__heading{
+  color: #545454;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 22px;
+
+}
+.button:hover{
+    opacity: 0.6;
+    transition: 0.1s linear 0.1s;
+}
