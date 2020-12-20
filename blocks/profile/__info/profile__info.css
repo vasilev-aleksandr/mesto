@@ -8,6 +8,7 @@
 
 @media (max-width: 1024px){
   .profile__info{
+    margin-left: 0;
     margin-right: 0;
     margin-bottom: 32px;
   }

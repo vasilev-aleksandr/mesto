@@ -4,10 +4,9 @@
   align-self: center;
   border: 1px solid #fff;
   background-color: #000;
-  background-image: url(./images/Vector2.svg);
+  background-image: url(../../../images/add.svg);
   background-repeat: no-repeat;
   background-position: center;
-  cursor: pointer;
 }
 
 @media (max-width: 425px){

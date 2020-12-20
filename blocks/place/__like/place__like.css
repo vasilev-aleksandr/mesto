@@ -1,10 +1,10 @@
 .place__like{
   width: 21px;
   height: 18px;
-  background-image: url(./images/Vector3.svg);
+  background-image: url(../../../images/like.svg);
   background-repeat: no-repeat;
   background-position: center;
+  background-size: contain;
   border: none;
   background-color: white;
-  cursor: pointer;
 }

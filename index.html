@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href='index.css'>
+    <link rel="stylesheet" href='./pages/index.css'>
     <title>Mesto</title>
 </head>
 <body class="body">
@@ -14,7 +14,7 @@
     </header>
     <main class="main">
       <section class="profile">
-      <img class="profile__avatar" src='./images/me.jpeg' alt='кусто'>
+      <img class="profile__avatar" src='./images/me.jpeg' alt='аватар'>
       <div class="profile__info">
         <div class="profile__name-container">
          <h2 class="profile__name">Васильев А.</h2>
@@ -26,7 +26,7 @@
       </section>
       <section class="places">
         <div class="place">
-          <img class="place__photo" src="./images/isakievsky.jpg" alt=''>
+          <img class="place__photo" src="./images/isakievsky.jpg" alt='исакиевский собор'>
           <div class="place__description">
             <h3 class='place__heading'>Исакиевский собор</h3>
             <button class='place__like button'>
@@ -34,35 +34,35 @@
           </div>
         </div>
         <div class="place">
-          <img class="place__photo" src="./images/kazansky.jpg" alt=''>
+          <img class="place__photo" src="./images/kazansky.jpg" alt='казанский собор'>
           <div class="place__description">
             <h3 class='place__heading'>Казанский собор</h3>
             <button class='place__like button'></button>
           </div>
         </div>
         <div class="place">
-          <img class="place__photo" src="./images/petropavl.jpg" alt=''>
+          <img class="place__photo" src="./images/petropavl.jpg" alt='петропавловская крепость'>
           <div class="place__description">
             <h3 class='place__heading'>Петропавловская крепость</h3>
             <button class='place__like button'></button>
           </div>
         </div>
         <div class="place">
-          <img class="place__photo" src="./images/smolny.jpg" alt=''>
+          <img class="place__photo" src="./images/smolny.jpg" alt='смольный собор'>
           <div class="place__description">
             <h3 class='place__heading'>Смольный собор</h3>
             <button class='place__like button'></button>
           </div>
         </div>
         <div class="place">
-          <img class="place__photo" src="./images/strelka.jpg" alt=''>
+          <img class="place__photo" src="./images/strelka.jpg" alt='стрелка васильевского острова'>
           <div class="place__description">
             <h3 class='place__heading'>Стрелка</h3>
             <button class='place__like button'></button>
           </div>
         </div>
         <div class="place">
-          <img class="place__photo" src="./images/vsadnik.jpg" alt=''>
+          <img class="place__photo" src="./images/vsadnik.jpg" alt='медный всадник'>
           <div class="place__description">
             <h3 class='place__heading'>Медный Всадник</h3>
             <button class='place__like button'></button>
@@ -71,7 +71,19 @@
       </section>
     </main>
     <footer class="footer">
-        <h3 class=footer__heading>&copy 2020 Mesto Russia</h3>
+        <h3 class=footer__heading>© 2020 Mesto Russia</h3>
     </footer>
+  <div class="popup">
+    <div class="popup__container">
+      <button class="popup__close-button button"></button>
+      <h2 class="popup__title">Редактировать профиль</h2>
+      <form class="popup__form">
+        <input class="popup__name" placeholder="">
+        <input class="popup__about" placeholder="">
+        <button class="popup__save-button button">Сохранить</button>
+    </form>   
+    </div>
+  </div>
+<script src='./sripts/index.js'></script>
 </body>
 </html>
