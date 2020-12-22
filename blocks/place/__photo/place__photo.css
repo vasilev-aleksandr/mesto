@@ -1,3 +1,5 @@
 .place__photo{
   width: 100%;
+  max-height: 282px;
+  object-fit: cover;
 }
