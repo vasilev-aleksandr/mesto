@@ -9,11 +9,13 @@
   background-repeat: no-repeat;
   cursor: pointer;
   justify-self: flex-start;
+  flex-shrink: 0;
 }
 
 @media (max-width: 768px){
   .profile__edit-button{
     width: 18px;
     height: 18px;
+    margin-left: 10px;
   }
 } 

@@ -3,11 +3,16 @@ let popup = document.querySelector('.popup')
 let closeButton = document.querySelector('.popup__close-button')
 let form = document.querySelector('.popup__form')
 let likeButtons = document.querySelectorAll('.place__like')
-
-let nameInput = document.querySelector('.popup__input_name')
-let jobInput = document.querySelector('.popup__input_about')
+let nameInput = document.querySelector('.popup__input_profile_name')
+let jobInput = document.querySelector('.popup__input_profile_about')
 let profileName = document.querySelector('.profile__name')
 let profileAbout = document.querySelector('.profile__about')
+
+function handleEditButtonClick() {
+  popup.classList.add('popup_active')
+  nameInput.value = profileName.textContent
+  jobInput.value = profileAbout.textContent
+}
 
 function removePopupActiveClass() {
   popup.classList.remove('popup_active')
@@ -20,11 +25,7 @@ function handleFormSubmit(event) {
   removePopupActiveClass()
 }
 
-editButton.addEventListener ('click', () => {
-  popup.classList.add('popup_active')
-  nameInput.value = profileName.textContent
-  jobInput.value = profileAbout.textContent
-})
+editButton.addEventListener('click', handleEditButtonClick)
 
 form.addEventListener('submit', handleFormSubmit)
 

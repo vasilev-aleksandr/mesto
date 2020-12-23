@@ -8,6 +8,8 @@
   background-repeat: no-repeat;
   background-position: center;
   border-radius: 2px;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 
 @media (max-width: 425px){
