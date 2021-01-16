@@ -1,8 +1,7 @@
 let editButton = document.querySelector('.profile__edit-button')
 let popupProfile = document.querySelector('.popup_profile')
-let profilePopupCloseButton = document.querySelector('.popup__close-button_profile')
+let profilePopupCloseButton = popupProfile.querySelector('.popup__close-button')
 let form = document.querySelector('.popup__form')
-let likeButtons = document.querySelectorAll('.place__like')
 let nameInput = document.querySelector('.popup__input_profile_name')
 let jobInput = document.querySelector('.popup__input_profile_about')
 let profileName = document.querySelector('.profile__name')
@@ -36,15 +35,11 @@ popupProfile.addEventListener('click', (event) => {
   removePopupProfileActiveClass()
 })
 
-for (let i = 0; i < likeButtons.length; i++) {
-  likeButtons[i].addEventListener('click', () => {
-    likeButtons[i].classList.toggle('place__like_active')
-  })
-}
+
 
 const addButton = document.querySelector('.profile__add-button')
 const popupPlace = document.querySelector('.popup_place')
-const placePopupCloseButton = document.querySelector('.popup__close-button_place')
+const placePopupCloseButton = popupPlace.querySelector('.popup__close-button')
 
 function handleAddButtonClick() {
 popupPlace.classList.add('popup_active')
@@ -63,6 +58,81 @@ popupPlace.addEventListener('click', (event) => {
     removePopupPlaceActiveClass()
 })
 
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+]; 
+
+initialCards.reverse()
 
 
+const places = document.querySelector('.places')
+const placeTemplate = document.querySelector('#place-template')
+const placeHeading = document.querySelector('.place__heading')
+const placePhoto = document.querySelector('.place__photo')
+const placeForm = popupPlace.querySelector('.popup__form')
+
+
+
+console.log(placeTemplate)
+function addPlace(name,link){
+  const placeElement = placeTemplate.content.cloneNode(true)
+  placeElement.querySelector('.place__heading').textContent = name;
+  placeElement.querySelector('.place__photo').src = link;
+  placeElement.querySelector('.place__delete-button').addEventListener('click', handlePlaceDelete)
+  placeElement.querySelector('.place__like').addEventListener('click', function (evt) {
+    evt.target.classList.toggle('place__like_active')
+  })
+  places.prepend(placeElement)
+}
+
+initialCards.forEach(card => addPlace(card.name, card.link))
+
+
+function handlePlaceSubmit(event) {
+  event.preventDefault()
+  const headingInput = document.querySelector('.popup__input_place_name').value
+  const linkInput = document.querySelector('.popup__input_place_link').value
+  const card = {
+  name: headingInput,
+  link: linkInput
+  }
+  initialCards.unshift(card)
+  
+  addPlace(headingInput, linkInput)
+  removePopupPlaceActiveClass()
+  }
+
+  placeForm.addEventListener('submit', handlePlaceSubmit)
+
+  function handlePlaceDelete(evt){
+    evt.target.closest('.place').remove()
+  }
+
+
+
+
+  
 

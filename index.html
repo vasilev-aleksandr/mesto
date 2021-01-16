@@ -24,48 +24,6 @@
       <button class="profile__add-button button" type="button"></button>
       </section>
       <section class="places">
-        <div class="place">
-          <img class="place__photo" src="./images/isakievsky.jpg" alt='исакиевский собор'>
-          <div class="place__description">
-            <h3 class='place__heading'>Исакиевский собор</h3>
-            <button class='place__like button' type="button"></button>
-          </div>
-        </div>
-        <div class="place">
-          <img class="place__photo" src="./images/kazansky.jpg" alt='казанский собор'>
-          <div class="place__description">
-            <h3 class='place__heading'>Казанский собор</h3>
-            <button class='place__like button' type="button"></button>
-          </div>
-        </div>
-        <div class="place">
-          <img class="place__photo" src="./images/petropavl.jpg" alt='петропавловская крепость'>
-          <div class="place__description">
-            <h3 class='place__heading'>Петропавловская крепость</h3>
-            <button class='place__like button' type="button"></button>
-          </div>
-        </div>
-        <div class="place">
-          <img class="place__photo" src="./images/smolny.jpg" alt='смольный собор'>
-          <div class="place__description">
-            <h3 class='place__heading'>Смольный собор</h3>
-            <button class='place__like button' type="button"></button>
-          </div>
-        </div>
-        <div class="place">
-          <img class="place__photo" src="./images/strelka.jpg" alt='стрелка васильевского острова'>
-          <div class="place__description">
-            <h3 class='place__heading'>Стрелка</h3>
-            <button class='place__like button' type="button"></button>
-          </div>
-        </div>
-        <div class="place">
-          <img class="place__photo" src="./images/vsadnik.jpg" alt='медный всадник'>
-          <div class="place__description">
-            <h3 class='place__heading'>Медный Всадник</h3>
-            <button class='place__like button' type="button"></button>
-          </div>
-        </div>
       </section>
     </main>
     <footer class="footer">
@@ -73,7 +31,7 @@
     </footer>
   <div class="popup popup_profile">
     <div class="popup__container">
-      <button class="popup__close-button popup__close-button_profile button" type="button"></button>
+      <button class="popup__close-button button" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
       <form class="popup__form" name="popup-profile-form">
         <input class="popup__input popup__input_profile_name" name="popup-profile-name">
@@ -84,7 +42,7 @@
   </div>
   <div class="popup popup_place">
     <div class="popup__container">
-      <button class="popup__close-button popup__close-button_place button" type="button"></button>
+      <button class="popup__close-button  button" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
       <form class="popup__form" name="popup-profile-form">
         <input class="popup__input popup__input_place_name" name="popup-place-name" placeholder="Название">
@@ -94,6 +52,16 @@
     </div>
   </div>
   </div>
+<template id='place-template'>
+  <div class="place">
+    <img class="place__photo">
+    <button class="place__delete-button button" type="button"></button>
+    <div class="place__description">
+      <h3 class='place__heading'></h3>
+      <button class='place__like button' type="button"></button>
+    </div>
+  </div>
+</template>
 <script src='./sripts/index.js'></script>
 </body>
 </html> 
