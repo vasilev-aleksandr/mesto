@@ -21,7 +21,7 @@ function handleFormSubmit(event) {
   event.preventDefault();
   profileName.textContent = nameInput.value
   profileAbout.textContent = jobInput.value
-  removePopupActiveClass()
+  removePopupProfileActiveClass()
 }
 
 editButton.addEventListener('click', handleEditButtonClick)
@@ -90,46 +90,69 @@ initialCards.reverse()
 
 const places = document.querySelector('.places')
 const placeTemplate = document.querySelector('#place-template')
-const placeHeading = document.querySelector('.place__heading')
-const placePhoto = document.querySelector('.place__photo')
 const placeForm = popupPlace.querySelector('.popup__form')
+const popupImage = document.querySelector('.popup_image')
 
 
 
-console.log(placeTemplate)
+
 function addPlace(name,link){
   const placeElement = placeTemplate.content.cloneNode(true)
-  placeElement.querySelector('.place__heading').textContent = name;
-  placeElement.querySelector('.place__photo').src = link;
-  placeElement.querySelector('.place__delete-button').addEventListener('click', handlePlaceDelete)
-  placeElement.querySelector('.place__like').addEventListener('click', function (evt) {
-    evt.target.classList.toggle('place__like_active')
+  const placeHeading = placeElement.querySelector('.place__heading')
+  placeHeading.textContent = name;
+  const placePhoto = placeElement.querySelector('.place__photo')
+  placePhoto.src = link;
+  placePhoto.addEventListener('click', () => handleImageZoomInClick(name, link))
+  const placeDeleteButton = placeElement.querySelector('.place__delete-button')
+  placeDeleteButton.addEventListener('click', handlePlaceDelete)
+  const placeLikeButton = placeElement.querySelector('.place__like')
+  placeLikeButton.addEventListener('click', function (evt) {
+  evt.target.classList.toggle('place__like_active')
   })
   places.prepend(placeElement)
-}
+  }
 
 initialCards.forEach(card => addPlace(card.name, card.link))
 
 
-function handlePlaceSubmit(event) {
-  event.preventDefault()
-  const headingInput = document.querySelector('.popup__input_place_name').value
-  const linkInput = document.querySelector('.popup__input_place_link').value
-  const card = {
-  name: headingInput,
-  link: linkInput
-  }
-  initialCards.unshift(card)
-  
-  addPlace(headingInput, linkInput)
-  removePopupPlaceActiveClass()
-  }
+  function handlePlaceSubmit(event) {
+    event.preventDefault()
+    const headingInput = document.querySelector('.popup__input_place_name')
+    const linkInput = document.querySelector('.popup__input_place_link')
+    
+    addPlace(headingInput.value, linkInput.value)
+    
+    headingInput.value = ''
+    linkInput.value = ''
+    removePopupPlaceActiveClass()
+    }
 
   placeForm.addEventListener('submit', handlePlaceSubmit)
 
   function handlePlaceDelete(evt){
     evt.target.closest('.place').remove()
   }
+
+  function handleImageZoomInClick(imageHeading, imageSource){
+    popupImage.classList.add('popup_active')
+    popupImage.querySelector('.popup__image-photo').src = imageSource;
+    popupImage.querySelector('.popup__image-description').textContent = imageHeading;
+  }
+
+  const imagePopupCloseButton = popupImage.querySelector('.popup__close-button')
+
+  function removePopupImageActiveClass() {
+    popupImage.classList.remove('popup_active')
+  }
+  
+  imagePopupCloseButton.addEventListener('click', removePopupImageActiveClass)
+
+  popupImage.addEventListener('click', (event) => {
+    if (event.target === event.currentTarget)
+    removePopupImageActiveClass()
+  })
+  
+
 
 
 
