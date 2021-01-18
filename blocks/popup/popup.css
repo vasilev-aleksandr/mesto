@@ -8,7 +8,7 @@
   left: 0;
   visibility: hidden; 
   opacity: 0; 
-  transition: 0.3s;
+  transition:  0.5s;
   justify-content: center;
   background: rgba(0, 0, 0, 0.5);
   align-items: center;
