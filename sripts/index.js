@@ -119,9 +119,7 @@ initialCards.forEach(card => addPlace(card.name, card.link))
     event.preventDefault()
     const headingInput = document.querySelector('.popup__input_place_name')
     const linkInput = document.querySelector('.popup__input_place_link')
-    
     addPlace(headingInput.value, linkInput.value)
-    
     headingInput.value = ''
     linkInput.value = ''
     removePopupPlaceActiveClass()
