@@ -1,6 +1,6 @@
 const editButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_profile');
-const form = document.querySelector('.popup__form');
+const profileForm = popupProfile.querySelector('.popup__form');
 const nameInput = document.querySelector('.popup__input_profile_name');
 const jobInput = document.querySelector('.popup__input_profile_about');
 const profileName = document.querySelector('.profile__name');
@@ -10,13 +10,12 @@ const placeTemplate = document.querySelector('#place-template');
 const addButton = document.querySelector('.profile__add-button');
 const popupPlace = document.querySelector('.popup_place');
 const placeForm = popupPlace.querySelector('.popup__form');
+const popupImage = document.querySelector('.popup_image');
 const headingInput = document.querySelector('.popup__input_place_name');
 const linkInput = document.querySelector('.popup__input_place_link');
-const popupImage = document.querySelector('.popup_image');
 const imagePhoto = popupImage.querySelector('.popup__image-photo');
 const imageDescription = popupImage.querySelector('.popup__image-description');
 const pagePopups = document.querySelectorAll('.popup');
-
 const initialCards = [
   {
     name: 'Архыз',
@@ -44,6 +43,7 @@ const initialCards = [
   }
 ]
 
+
 function closePopup(popup) {
   popup.classList.remove('popup_active');
 }
@@ -63,6 +63,7 @@ function addPopupCloseListeners(popups) {
   })
 }
 
+
 function handleEditButtonClick() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileAbout.textContent;
@@ -73,35 +74,38 @@ function handleFormSubmit(event) {
   event.preventDefault();
   profileName.textContent = nameInput.value;
   profileAbout.textContent = jobInput.value;
-  removePopupActiveClass(popupProfile);
+  closePopup(popupProfile);
 }
 
 function handleLikeButtonClick(evt) {
   evt.target.classList.toggle('place__like_active')
 }
-
+   
 function createPlaceCard(name,link) {
   const placeElement = placeTemplate.content.cloneNode(true)
   const placeHeading = placeElement.querySelector('.place__heading')
   placeHeading.textContent = name
-
+  
   const placePhoto = placeElement.querySelector('.place__photo')
   placePhoto.src = link
   placePhoto.addEventListener('click', () => handleImageZoomInClick(name, link))
-
+  
   const placeDeleteButton = placeElement.querySelector('.place__delete-button')
   placeDeleteButton.addEventListener('click', handlePlaceDelete)
-
+  
   const placeLikeButton = placeElement.querySelector('.place__like')
   placeLikeButton.addEventListener('click', handleLikeButtonClick)
-
+  
   return placeElement
 }
-
+  
 function addPlace(name,link) {
   const card = createPlaceCard(name,link)
   places.prepend(card)
 }
+
+initialCards.reverse().forEach(card => addPlace(card.name, card.link))
+
 
 function handlePlaceSubmit(event) {
   event.preventDefault()
@@ -121,14 +125,12 @@ function handleImageZoomInClick(imageHeading, imageSource) {
   imageDescription.textContent = imageHeading
 }
 
-initialCards.reverse().forEach(card => addPlace(card.name, card.link))
-
 addPopupCloseListeners(pagePopups);
 
 editButton.addEventListener('click', handleEditButtonClick);
 
-form.addEventListener('submit', handleFormSubmit);
+profileForm.addEventListener('submit', handleFormSubmit);
 
-addButton.addEventListener('click', () => openPopup(popupPlace));
+addButton.addEventListener('click', () => openPopup(popupPlace)); 
 
 placeForm.addEventListener('submit', handlePlaceSubmit)
