@@ -44,12 +44,21 @@ const initialCards = [
 ]
 
 
+function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_active')
+    closePopup(openedPopup);
+  }
+}
+
 function closePopup(popup) {
   popup.classList.remove('popup_active');
+  document.removeEventListener('keydown', closeByEscape); 
 }
 
 function openPopup(popup) {
   popup.classList.add('popup_active');
+  document.addEventListener('keydown', closeByEscape); 
 }
 
 function addPopupCloseListeners(popups) {
@@ -61,11 +70,6 @@ function addPopupCloseListeners(popups) {
     popup.addEventListener('click', (event) => {
       if (event.target === event.currentTarget) closePopup(popup);
       })
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-      closePopup(popup)
-      }
-      })
   })
 }
 
@@ -73,26 +77,10 @@ function handleEditButtonClick() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileAbout.textContent;
   openPopup(popupProfile);
-  enableValidation({
-    formSelector: '.popup_profile',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__save-button',
-    inactiveButtonClass: 'popup__save-button_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-  })
 }
 
 function handleAddButtonClick() {
   openPopup(popupPlace)
-  enableValidation({
-    formSelector: '.popup_place',
-    inputSelector: '.popup__input',
-    submitButtonSelector: '.popup__save-button',
-    inactiveButtonClass: 'popup__save-button_disabled',
-    inputErrorClass: 'popup__input_type_error',
-    errorClass: 'popup__error_visible'
-  })
 }
 
 function handleFormSubmit(event) {
