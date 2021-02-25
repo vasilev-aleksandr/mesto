@@ -1,3 +1,8 @@
+import { initialCards } from './placesArray.js'
+import { validatorData } from './data.js'
+import { Card } from './Card.js'
+import { FormValidator } from './FormValidator.js'
+
 const editButton = document.querySelector('.profile__edit-button');
 const popupProfile = document.querySelector('.popup_profile');
 const profileForm = popupProfile.querySelector('.popup__form');
@@ -16,49 +21,29 @@ const linkInput = document.querySelector('.popup__input_place_link');
 const imagePhoto = popupImage.querySelector('.popup__image-photo');
 const imageDescription = popupImage.querySelector('.popup__image-description');
 const pagePopups = document.querySelectorAll('.popup');
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-]
+const inputList = Array.from(document.querySelectorAll('.popup__input'));
+const placeFormValidator = new FormValidator(validatorData, popupPlace);
+const profileFormValidator = new FormValidator(validatorData, popupProfile);
 
+
+function openPopup(popup) {
+  popup.classList.add('popup_active');
+  document.addEventListener('keydown', closeByEscape); 
+}
+
+function closePopup(popup) {
+  popup.classList.remove('popup_active');
+  document.removeEventListener('keydown', closeByEscape); 
+  inputList.forEach((inputElement) => {
+  inputElement.value=''
+  })
+}
 
 function closeByEscape(evt) {
   if (evt.key === 'Escape') {
     const openedPopup = document.querySelector('.popup_active')
     closePopup(openedPopup);
   }
-}
-
-function closePopup(popup) {
-  popup.classList.remove('popup_active');
-  document.removeEventListener('keydown', closeByEscape); 
-}
-
-function openPopup(popup) {
-  popup.classList.add('popup_active');
-  document.addEventListener('keydown', closeByEscape); 
 }
 
 function addPopupCloseListeners(popups) {
@@ -90,36 +75,20 @@ function handleFormSubmit(event) {
   closePopup(popupProfile);
 }
 
-function handleLikeButtonClick(evt) {
-  evt.target.classList.toggle('place__like_active')
+export function handleImageZoomInClick(imageHeading, imageSource) {
+  openPopup(popupImage)
+  imagePhoto.src = imageSource
+  imageDescription.textContent = imageHeading
 }
-   
-function createPlaceCard(name,link) {
-  const placeElement = placeTemplate.content.cloneNode(true)
-  const placeHeading = placeElement.querySelector('.place__heading')
-  placeHeading.textContent = name
-  
-  const placePhoto = placeElement.querySelector('.place__photo')
-  placePhoto.src = link
-  placePhoto.addEventListener('click', () => handleImageZoomInClick(name, link))
-  
-  const placeDeleteButton = placeElement.querySelector('.place__delete-button')
-  placeDeleteButton.addEventListener('click', handlePlaceDelete)
-  
-  const placeLikeButton = placeElement.querySelector('.place__like')
-  placeLikeButton.addEventListener('click', handleLikeButtonClick)
-  
-  return placeElement
-}
-  
+
+
 function addPlace(name,link) {
-  const card = createPlaceCard(name,link)
+  const card = new Card({name,link}, '#place-template').generateCard()
   places.prepend(card)
 }
-
+  
 initialCards.reverse().forEach(card => addPlace(card.name, card.link))
-
-
+  
 function handlePlaceSubmit(event) {
   event.preventDefault()
   addPlace(headingInput.value, linkInput.value)
@@ -128,15 +97,6 @@ function handlePlaceSubmit(event) {
   closePopup(popupPlace)
 }
 
-function handlePlaceDelete(evt) {
-  evt.target.closest('.place').remove()
-}
-
-function handleImageZoomInClick(imageHeading, imageSource) {
-  openPopup(popupImage)
-  imagePhoto.src = imageSource
-  imageDescription.textContent = imageHeading
-}
 
 addPopupCloseListeners(pagePopups);
 
@@ -151,5 +111,6 @@ placeForm.addEventListener('submit', handlePlaceSubmit);
 
 
 
+placeFormValidator.enableValidation()
 
-
+profileFormValidator.enableValidation()
