@@ -34,9 +34,6 @@ function openPopup(popup) {
 function closePopup(popup) {
   popup.classList.remove('popup_active');
   document.removeEventListener('keydown', closeByEscape); 
-  inputList.forEach((inputElement) => {
-  inputElement.value=''
-  })
 }
 
 function closeByEscape(evt) {
@@ -62,10 +59,15 @@ function handleEditButtonClick() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileAbout.textContent;
   openPopup(popupProfile);
+  profileFormValidator.resetValidation ()
 }
 
 function handleAddButtonClick() {
   openPopup(popupPlace)
+  placeFormValidator.resetValidation ()
+  inputList.forEach((inputElement) => {
+    inputElement.value=''
+    })
 }
 
 function handleFormSubmit(event) {
@@ -109,8 +111,7 @@ addButton.addEventListener('click', handleAddButtonClick);
 placeForm.addEventListener('submit', handlePlaceSubmit);
 
 
-
+profileFormValidator.enableValidation()
 
 placeFormValidator.enableValidation()
 
-profileFormValidator.enableValidation()
