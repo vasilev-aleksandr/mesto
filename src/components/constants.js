@@ -24,3 +24,17 @@ export const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ]
+
+export const editButton = document.querySelector('.profile__edit-button');
+export const addButton = document.querySelector('.profile__add-button');
+
+export const nameSelector = '.profile__name';
+export const aboutSelector = '.profile__about';
+
+export const placesContainerSelector = '.places';
+export const placeTemplateSelector = '#place-template';
+
+export const popupPlaceSelector = '.popup_place';
+export const popupProfileSelector = '.popup_profile';
+export const popupImageSelector = '.popup_image';
+

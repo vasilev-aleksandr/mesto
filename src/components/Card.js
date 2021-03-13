@@ -1,30 +1,32 @@
-import { handleImageZoomInClick } from './index.js'
-
 export class Card {
-  constructor (data, cardSelector) {
+  constructor (data, cardSelector, handleCardClick) {
     this._name = data.name
     this._link = data.link
+    this._handleCardClick = handleCardClick
     this._cardSelector = cardSelector
   }
+
   _getTemplate () {
     const template = document.querySelector(this._cardSelector).content
     const cardElement = template.querySelector('.place').cloneNode(true)
     return cardElement
   }
-  _handleClickPopupPhoto () {
-    handleImageZoomInClick(this._name,this._link)
-    }
+
+  _handleClickPhoto () {
+    return this._handleCardClick()
+  }
 
   _handleLikeButtonClick() {
     this._placeLikeButton.classList.toggle('place__like_active') 
   }
+
   _handlePlaceDelete(){
     this._placeСard.remove()
   }
 
   _setEventListeners () {
     this._placePhoto.addEventListener('click', () => {
-      this._handleClickPopupPhoto()
+      this._handleClickPhoto()
     })
     this._placeLikeButton.addEventListener('click', () => {
       this._handleLikeButtonClick()
