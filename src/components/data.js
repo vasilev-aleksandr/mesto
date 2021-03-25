@@ -6,3 +6,11 @@ export const validatorData = {
   errorSelector: '.popup__error',
   errorClass: 'popup__error_visible',
 }
+
+export const configApi = {
+  url: 'https://mesto.nomoreparties.co/v1/cohort-21',
+  headers: {
+    authorization: '5272ec4f-012a-4dd0-babb-fcf2aac8eb04',
+    'Content-Type': 'application/json'
+  }
+}

@@ -12,7 +12,9 @@
     </header>
     <main class="main">
       <section class="profile">
-      <img class="profile__avatar" src="<%=require('./images/me.jpg')%>" alt='аватар'>
+      <button class="profile__avatar-edit">
+        <img class="profile__avatar" src="<%=require('./images/me.jpg')%>" alt='аватар'>
+      </button>
       <div class="profile__info">
         <div class="profile__name-container">
          <h1 class="profile__name">Васильев А.</h1>
@@ -61,14 +63,34 @@
       <p class="popup__image-description"></p>
     </div>
   </div>
+  <div class="popup popup_avatar">
+      <div class="popup__container"> 
+        <button class="popup__close-button button" type="button"></button>
+        <h2 class="popup__title">Обновить аватар</h2> 
+        <form class="popup__form" name="popup-avatar-form" novalidate>
+          <input id ='profile-avatar' class="popup__input popup__input_profile_avatar"  name="popupInputAvatarPhoto" type="url" placeholder="Ссылка на картинку" required>
+          <span id="profile-avatar-error" class="popup__error"></span>
+          <button class="popup__save-button button" type="submit" >Сохранить</button>
+        </form>  
+      </div>
   </div>
+  <div class="popup popup_delete-confirm">
+    <div class="popup__container"> 
+      <button class="popup__close-button button" type="button"></button>
+      <h2 class="popup__title_confirmation">Вы уверены?</h2> 
+      <button class="popup__save-button button" type="submit" >Да</button>
+    </div>
+</div>
+</div>
 <template id='place-template'>
   <div class="place">
     <img class="place__photo" src='#' alt='изображение'>
-    <button class="place__delete-button button" type="button"></button>
     <div class="place__description">
       <h3 class='place__heading'></h3>
-      <button class='place__like button' type="button"></button>
+      <div class ='place__like-container'>
+        <button class='place__like button' type="button"></button>
+        <span class='place__like-counter'>0</span>
+      </div>
     </div>
   </div>
 </template>

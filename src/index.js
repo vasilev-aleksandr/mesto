@@ -1,56 +1,100 @@
-
 import './index.css'
 
 import {
-  initialCards,
   addButton,
   editButton,
+  avatarEditButton,
   nameSelector,
   aboutSelector,
+  avatarSelector,
   placesContainerSelector,
   placeTemplateSelector,
   popupImageSelector,
   popupPlaceSelector,
-  popupProfileSelector
-} from './components/constants.js'
+  popupProfileSelector,
+  popupAvatarSelector,
+  popupDeleteConfirmSelector,
+  VALIDATOR_DATA,
+  CONFIG_API,
+} from './constants.js'
 import Section from './components/Section.js'
-import { Card } from './components/Card.js'
+import Card from './components/Card.js'
 import UserInfo from './components/UserInfo.js'
 import PopupWithImage  from './components/PopupWithImage.js'
 import PopupWithForm from './components/PopupWithForm.js'
-import { FormValidator } from './components/FormValidator.js'
-import { validatorData } from './components/data.js'
+import FormValidator from './components/FormValidator.js'
+import PopupWithConfirmation from './components/PopupWithConfirmation'
+import Api from './api/Api'
+
+const api = new Api(CONFIG_API)
+
+const user = new UserInfo({
+  nameSelector,
+  aboutSelector,
+  avatarSelector
+})
+
+api.getMyInfo().then(data => {
+  user.setUserInfo(data)
+  user.setUserAvatar(data.avatar)
+})
 
 
-const addPlace = ({name,link}) => {
-  const card = new Card({ name, link }, placeTemplateSelector, () => { popupPhoto.open({ name, link }) })
+const addPlace = ({ name, link, likes, id, owner }, userId) => {
+  const card = new Card(
+    { name, link, likes, id, owner },
+    userId,
+    placeTemplateSelector,
+    () => { popupPhoto.open({ name, link }) },
+    (cardElement) => { popupWithDelete.open(cardElement, id) },
+    () => { return api.likeCard(id) },
+    () => { return api.dislikeCard(id) }
+  )
   return card.generateCard()
-  }
+}
 
 const cards = new Section({
-  items: initialCards.reverse(),
-  renderer: ({ name, link }) => {
-  const cardElement = addPlace({ name, link })
-  cards.addItem(cardElement)
+  items: [],
+  renderer: (container, item) => {
+    container.append(item)
   }},
   placesContainerSelector,
-  )
-cards.renderItems()
-  
+)
 
+api.getCards()
+  .then((data) => data.forEach(({ name, link, likes, _id, owner }) => {
+    const cardElement = addPlace({ name, link, likes, id: _id, owner }, user.id)
+    cards.addItem(cardElement, true)
+  }))
+  .then(() => {
+    cards.renderItems()
+  })
+
+ 
 const popupPlaceFormHandler =
   (formData) => {
     const {
       popupPlaceName: name,
-      popupPlaceLink: link
+      popupPlaceLink: link,
     } = formData
-  const cardElement = addPlace({ name, link })
-  cards.addItem(cardElement)
-}
+    
+    popupPlace.showLoading()
+
+    api.createCard({ name, link })
+      .then(({ name, link, _id, likes, owner }) => {
+        const cardElement = addPlace({ name, link, id: _id, likes, owner }, owner._id)
+        cards.addItem(cardElement, false)
+      })  
+      .then(() => {
+        popupPlace.hideLoading()
+        popupPlace.close()
+      })
+      .then(() => {
+        cards.renderItems()
+      })
+    }
 
 const popupPlace = new PopupWithForm(popupPlaceSelector, popupPlaceFormHandler)
-
-
 
 popupPlace.setEventListeners()
 
@@ -61,14 +105,40 @@ const popupProfileFormHandler =
       popupProfileName: name,
       popupProfileAbout: about
     } = formData
-user.setUserInfo({ name, about })
-}
+    popupProfile.showLoading()
+
+    api.updateMyInfo({ name, about })
+      .then(({ name, about }) => user.setUserInfo({ name, about }))
+      .then(() =>  {
+        popupProfile.hideLoading()
+        popupProfile.close()
+      })
+  }
 
 const popupProfile = new PopupWithForm(popupProfileSelector, popupProfileFormHandler)
 
-
 popupProfile.setEventListeners()
 
+
+const popupAvatarFormHandler = 
+  (formData) => {
+    const {
+      popupInputAvatarPhoto: avatar
+    } = formData
+
+    popupAvatar.showLoading()
+
+    api.updateMyAvatar(avatar)
+      .then(({ avatar }) =>  user.setUserAvatar(avatar))
+      .then(() => {
+        popupAvatar.hideLoading()
+        popupAvatar.close()
+    })
+}
+
+const popupAvatar = new PopupWithForm(popupAvatarSelector, popupAvatarFormHandler)
+
+popupAvatar.setEventListeners()
 
 
 const popupPhoto = new PopupWithImage(popupImageSelector)
@@ -76,19 +146,36 @@ const popupPhoto = new PopupWithImage(popupImageSelector)
 popupPhoto.setEventListeners()
 
 
+const popupWithDelete = new PopupWithConfirmation(
+  popupDeleteConfirmSelector, 
+  (cardElement, id) => {
+    api.deleteCard(id)
+      .then(() => {
+        cards.removeItem(cardElement)
+      })
+      .then(() => {
+        cards.renderItems()
+      })
+  }
+) 
 
-const user = new UserInfo({
-  nameSelector,
-  aboutSelector
-})
+popupWithDelete.setEventListeners()
 
 
-function showPopupPlace () {
+const placeFormValidator = new FormValidator(VALIDATOR_DATA, popupPlaceSelector)
+const profileFormValidator = new FormValidator(VALIDATOR_DATA, popupProfileSelector)
+const avatarFormValidator = new FormValidator(VALIDATOR_DATA, popupAvatarSelector)
+
+placeFormValidator.enableValidation()
+profileFormValidator.enableValidation()
+avatarFormValidator.enableValidation()
+
+
+const showPopupPlace = () => {
   popupPlace.open()
 }
 
-
-function showPopupProfile () {
+const showPopupProfile = () => {
   const userInfo = user.getUserInfo()
   popupProfile.open({
     popupProfileName: userInfo.name,
@@ -97,19 +184,11 @@ function showPopupProfile () {
   profileFormValidator.resetValidation()
 }
 
-
-const placeFormValidator = new FormValidator(validatorData, popupPlaceSelector);
-const profileFormValidator = new FormValidator(validatorData, popupProfileSelector);
-
-placeFormValidator.enableValidation()
-profileFormValidator.enableValidation()
+const showPopupAvatar = () => {
+  popupAvatar.open()
+}
 
 addButton.addEventListener('click', showPopupPlace)
 editButton.addEventListener('click', showPopupProfile)
-
-
-
-
-
-
+avatarEditButton.addEventListener('click', showPopupAvatar)
 
