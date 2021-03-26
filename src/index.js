@@ -34,21 +34,15 @@ const user = new UserInfo({
   avatarSelector
 })
 
-api.getMyInfo().then(data => {
-  user.setUserInfo(data)
-  user.setUserAvatar(data.avatar)
-})
-
-
 const addPlace = ({ name, link, likes, id, owner }, userId) => {
   const card = new Card(
-    { name, link, likes, id, owner },
-    userId,
-    placeTemplateSelector,
-    () => { popupPhoto.open({ name, link }) },
-    (cardElement) => { popupWithDelete.open(cardElement, id) },
-    () => { return api.likeCard(id) },
-    () => { return api.dislikeCard(id) }
+  { name, link, likes, id, owner },
+  userId,
+  placeTemplateSelector,
+  () => { popupPhoto.open({ name, link }) },
+  (cardElement) => { popupWithDelete.open(cardElement, id) },
+  () => { return api.likeCard(id) },
+  () => { return api.dislikeCard(id) }
   )
   return card.generateCard()
 }
@@ -61,14 +55,19 @@ const cards = new Section({
   placesContainerSelector,
 )
 
-api.getCards()
+api.getMyInfo().then(data => {
+  user.setUserInfo(data)
+  user.setUserAvatar(data.avatar)
+  }).then(() => {
+  api.getCards()
   .then((data) => data.forEach(({ name, link, likes, _id, owner }) => {
-    const cardElement = addPlace({ name, link, likes, id: _id, owner }, user.id)
-    cards.addItem(cardElement, true)
+  const cardElement = addPlace({ name, link, likes, id: _id, owner }, user.id)
+  cards.addItem(cardElement, true)
   }))
   .then(() => {
-    cards.renderItems()
+  cards.renderItems()
   })
+})
 
  
 const popupPlaceFormHandler =
@@ -88,8 +87,6 @@ const popupPlaceFormHandler =
       .then(() => {
         popupPlace.hideLoading()
         popupPlace.close()
-      })
-      .then(() => {
         cards.renderItems()
       })
     }
@@ -109,11 +106,9 @@ const popupProfileFormHandler =
 
     api.updateMyInfo({ name, about })
       .then(({ name, about }) => user.setUserInfo({ name, about }))
-      .then(() =>  {
         popupProfile.hideLoading()
         popupProfile.close()
-      })
-  }
+}
 
 const popupProfile = new PopupWithForm(popupProfileSelector, popupProfileFormHandler)
 
@@ -130,10 +125,8 @@ const popupAvatarFormHandler =
 
     api.updateMyAvatar(avatar)
       .then(({ avatar }) =>  user.setUserAvatar(avatar))
-      .then(() => {
         popupAvatar.hideLoading()
         popupAvatar.close()
-    })
 }
 
 const popupAvatar = new PopupWithForm(popupAvatarSelector, popupAvatarFormHandler)
@@ -152,8 +145,6 @@ const popupWithDelete = new PopupWithConfirmation(
     api.deleteCard(id)
       .then(() => {
         cards.removeItem(cardElement)
-      })
-      .then(() => {
         cards.renderItems()
       })
   }

@@ -54,8 +54,6 @@ export default class Card {
       this._handleCardDislike()
         .then((card) => {
           this._likes = card.likes
-        })
-        .then(() => {
           this._dislikeCard()
           this._setLikesCounter()
         })
@@ -63,8 +61,6 @@ export default class Card {
       this._handleCardLike()
         .then((card) => {
           this._likes = card.likes
-        })
-        .then(() => {
           this._likeCard()
           this._setLikesCounter()
         })
