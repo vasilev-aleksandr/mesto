@@ -55,20 +55,17 @@ const cards = new Section({
   placesContainerSelector,
 )
 
-api.getMyInfo().then(data => {
-  user.setUserInfo(data)
-  user.setUserAvatar(data.avatar)
-  }).then(() => {
-  api.getCards()
-  .then((data) => data.forEach(({ name, link, likes, _id, owner }) => {
-  const cardElement = addPlace({ name, link, likes, id: _id, owner }, user.id)
-  cards.addItem(cardElement, true)
-  }))
-  .then(() => {
-  cards.renderItems()
-  })
-})
+Promise.all([api.getMyInfo(), api.getCards()])
+.then(([userInfo, cardInfo]) => {
+  user.setUserInfo(userInfo)
+  user.setUserAvatar(userInfo.avatar)
 
+  cardInfo.forEach(({ name, link, likes, _id, owner }) => {
+    const cardElement = addPlace({ name, link, likes, id: _id, owner }, user.id)
+    cards.addItem(cardElement, true)
+  })
+  cards.renderItems()
+})
  
 const popupPlaceFormHandler =
   (formData) => {
@@ -96,18 +93,21 @@ const popupPlace = new PopupWithForm(popupPlaceSelector, popupPlaceFormHandler)
 popupPlace.setEventListeners()
 
 
-const popupProfileFormHandler = 
-  (formData) => {
-    const {
-      popupProfileName: name,
-      popupProfileAbout: about
-    } = formData
-    popupProfile.showLoading()
+const popupProfileFormHandler =
+(formData) => {
+  const {
+    popupProfileName: name,
+    popupProfileAbout: about
+  } = formData
 
-    api.updateMyInfo({ name, about })
-      .then(({ name, about }) => user.setUserInfo({ name, about }))
-        popupProfile.hideLoading()
-        popupProfile.close()
+  popupProfile.showLoading()
+
+  api.updateMyInfo({ name, about })
+  .then(({ name, about }) => {
+    user.setUserInfo({ name, about })
+    popupProfile.hideLoading()
+    popupProfile.close()
+  })
 }
 
 const popupProfile = new PopupWithForm(popupProfileSelector, popupProfileFormHandler)
@@ -115,18 +115,20 @@ const popupProfile = new PopupWithForm(popupProfileSelector, popupProfileFormHan
 popupProfile.setEventListeners()
 
 
-const popupAvatarFormHandler = 
-  (formData) => {
-    const {
-      popupInputAvatarPhoto: avatar
-    } = formData
+const popupAvatarFormHandler =
+(formData) => {
+  const {
+    popupInputAvatarPhoto: avatar
+  } = formData
 
-    popupAvatar.showLoading()
+  popupAvatar.showLoading()
 
-    api.updateMyAvatar(avatar)
-      .then(({ avatar }) =>  user.setUserAvatar(avatar))
-        popupAvatar.hideLoading()
-        popupAvatar.close()
+  api.updateMyAvatar(avatar)
+  .then(({ avatar }) => {
+    user.setUserAvatar(avatar)
+    popupAvatar.hideLoading()
+    popupAvatar.close()
+  })
 }
 
 const popupAvatar = new PopupWithForm(popupAvatarSelector, popupAvatarFormHandler)
