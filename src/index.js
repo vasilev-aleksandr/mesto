@@ -80,13 +80,14 @@ const popupPlaceFormHandler =
       .then(({ name, link, _id, likes, owner }) => {
         const cardElement = addPlace({ name, link, id: _id, likes, owner }, owner._id)
         cards.addItem(cardElement, false)
+        cards.renderItems()
       })  
-      .then(() => {
+      .finally(() => {
         popupPlace.hideLoading()
         popupPlace.close()
-        cards.renderItems()
+       
       })
-    }
+  } 
 
 const popupPlace = new PopupWithForm(popupPlaceSelector, popupPlaceFormHandler)
 
@@ -105,6 +106,8 @@ const popupProfileFormHandler =
   api.updateMyInfo({ name, about })
   .then(({ name, about }) => {
     user.setUserInfo({ name, about })
+  })
+  .finally(() => {
     popupProfile.hideLoading()
     popupProfile.close()
   })
@@ -126,6 +129,8 @@ const popupAvatarFormHandler =
   api.updateMyAvatar(avatar)
   .then(({ avatar }) => {
     user.setUserAvatar(avatar)
+  })
+  .finally(() => {
     popupAvatar.hideLoading()
     popupAvatar.close()
   })
